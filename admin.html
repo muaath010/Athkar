@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة المركزية - زاد المسلم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --surface: #1e293b;
+            --primary: #10b981;
+            --text: #f8fafc;
+        }
+        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-dark); color: var(--text); padding: 20px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
+        
+        /* شاشة الدخول */
+        #loginScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; }
+        #loginScreen input { padding: 12px; border-radius: 8px; border: none; outline: none; margin-bottom: 15px; width: 250px; text-align: center; }
+        #loginScreen button { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        /* لوحة التحكم */
+        #dashboard { display: none; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--surface); padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid var(--primary); }
+        .stat-card h3 { color: #94a3b8; font-size: 14px; margin-bottom: 10px; }
+        .stat-card .value { font-size: 28px; font-weight: bold; color: var(--primary); }
+        
+        /* جدول البيانات */
+        .table-container { background: var(--surface); border-radius: 10px; overflow-x: auto; padding: 15px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { text-align: right; padding: 12px; border-bottom: 1px solid #334155; }
+        th { color: var(--primary); font-size: 14px; }
+        tr:hover { background-color: rgba(255,255,255,0.02); }
+        .private-data { color: #fbbf24; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>مركز الإدارة والتحكم</h2>
+        <span style="font-size: 12px; color: #94a3b8;">خاص بالإدارة العليا</span>
+    </div>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginScreen">
+        <h3 style="margin-bottom: 20px;">الرجاء إدخال رمز الوصول</h3>
+        <input type="password" id="adminPass" placeholder="كلمة المرور">
+        <button onclick="fetchAdminData()">تسجيل الدخول</button>
+        <p id="loginError" style="color: #ef4444; margin-top: 15px; display: none;">كلمة المرور غير صحيحة</p>
+    </div>
+
+    <!-- لوحة البيانات -->
+    <div id="dashboard">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>إجمالي المستخدمين</h3>
+                <div class="value" id="totalUsers">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>إجمالي التسبيحات للمنصة</h3>
+                <div class="value" id="totalTasbeeh">0</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h3 style="margin-bottom: 15px; color: #94a3b8;">سجل المستخدمين (بيانات كاملة)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>عدد التسبيحات</th>
+                        <th>المستوى</th>
+                        <th>رقم التواصل (سري)</th>
+                        <th>آخر نشاط</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- سيتم تعبئة البيانات هنا -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // ضع نفس رابط Google Apps Script هنا
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyKddr0gVoUZ7eIRNs2u8TejmG2meq4u8cPyBcXefRwd5NmXgf7nnkU4OIfLK0OrJWc4Q/exec';
+
+        async function fetchAdminData() {
+            const pass = document.getElementById('adminPass').value;
+            const btn = document.querySelector('#loginScreen button');
+            
+            btn.textContent = 'جاري التحقق...';
+            document.getElementById('loginError').style.display = 'none';
+
+            try {
+                // نرسل الطلب مع تحديد الأكشن وكلمة المرور في الرابط
+                const response = await fetch(`${GAS_URL}?action=admin&password=${pass}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById('loginError').style.display = 'block';
+                    btn.textContent = 'تسجيل الدخول';
+                    return;
+                }
+
+                // إذا نجح الدخول، نعرض اللوحة
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+
+                // تعبئة الإحصائيات
+                document.getElementById('totalUsers').textContent = data.totalUsers;
+                document.getElementById('totalTasbeeh').textContent = data.totalTasbeeh.toLocaleString();
+
+                // تعبئة الجدول
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML = '';
+                
+                // ترتيب المستخدمين تنازلياً
+                data.users.sort((a, b) => b.tasbeehCount - a.tasbeehCount);
+
+                data.users.forEach(user => {
+                    let date = new Date(user.date).toLocaleDateString('ar-OM');
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight: bold;">${user.userName}</td>
+                            <td>${user.tasbeehCount.toLocaleString()}</td>
+                            <td>${user.level}</td>
+                            <td class="private-data">${user.phone || 'غير مدرج'}</td>
+                            <td style="font-size: 12px; color: #94a3b8;">${date}</td>
+                        </tr>
+                    `;
+                });
+
+            } catch (error) {
+                alert('حدث خطأ في الاتصال بقاعدة البيانات');
+                btn.textContent = 'تسجيل الدخول';
+            }
+        }
+    </script>
+</body>
+</html>
