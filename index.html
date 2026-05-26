@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>زاد المسلم</title>
+    <title>زاد المسلم - تطبيق متكامل</title>
     <!-- استدعاء خط Cairo الاحترافي -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- استدعاء أيقونات FontAwesome -->
@@ -11,14 +11,13 @@
     
     <style>
         :root {
-            /* الألوان الأساسية - الوضع الليلي الأنيق */
-            --bg-color: #0f172a; /* كحلي داكن جداً */
-            --surface-color: #1e293b; /* كحلي فاتح للبطاقات */
-            --primary-color: #10b981; /* أخضر زمردي إسلامي */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary-color: #10b981;
             --primary-dark: #059669;
-            --accent-color: #fbbf24; /* ذهبي هادئ */
-            --text-main: #f8fafc; /* أبيض ناصع */
-            --text-muted: #94a3b8; /* رمادي للنصوص الفرعية */
+            --accent-color: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --border-color: #334155;
         }
 
@@ -39,7 +38,6 @@
             overflow: hidden;
         }
 
-        /* رأس التطبيق */
         header {
             padding: 20px 20px 10px;
             display: flex;
@@ -53,7 +51,6 @@
             font-size: 24px;
             font-weight: 800;
             color: var(--primary-color);
-            letter-spacing: 1px;
         }
 
         .level-badge {
@@ -66,39 +63,34 @@
             font-weight: 600;
         }
 
-        /* المحتوى الأساسي */
         main {
             flex: 1;
             overflow-y: auto;
-            padding: 0 20px 80px; /* مساحة في الأسفل للشريط */
+            padding: 0 20px 80px;
             position: relative;
         }
 
-        /* التبويبات (الصفحات) */
         .tab-pane {
             display: none;
             animation: fadeIn 0.3s ease-in-out;
         }
-        .tab-pane.active {
-            display: block;
-        }
+        .tab-pane.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ================= تصميم صفحة المسبحة الرئيسية ================= */
+        /* المسبحة */
         .tasbeeh-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100%;
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
-        /* المسبحة الدائرية التفاعلية */
         .progress-ring-container {
             position: relative;
             width: 250px;
@@ -123,7 +115,6 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
-            transition: transform 0.1s;
         }
 
         .progress-ring-inner:active {
@@ -131,21 +122,11 @@
             background-color: var(--surface-color);
         }
 
-        .counter-value {
-            font-size: 65px;
-            font-weight: 800;
-            color: var(--text-main);
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .click-hint {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
+        .counter-value { font-size: 65px; font-weight: 800; color: var(--text-main); line-height: 1; margin-bottom: 5px; }
+        .click-hint { font-size: 14px; color: var(--text-muted); }
 
         .daily-goal-info {
-            margin-top: 40px;
+            margin-top: 30px;
             text-align: center;
             background: var(--surface-color);
             padding: 15px 30px;
@@ -154,18 +135,7 @@
             width: 100%;
         }
 
-        .daily-goal-info p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .daily-goal-info h3 {
-            color: var(--accent-color);
-            font-size: 18px;
-        }
-
-        /* ================= تصميم البطاقات العامة (للإعدادات والصوتيات) ================= */
+        /* البطاقات العامة */
         .modern-card {
             background-color: var(--surface-color);
             border-radius: 16px;
@@ -183,19 +153,10 @@
             gap: 10px;
         }
 
-        /* الحقول والأزرار */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        input[type="text"], input[type="number"] {
+        /* الحقول والقوائم المنسدلة */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted); }
+        input[type="text"], input[type="number"], select {
             width: 100%;
             padding: 12px 15px;
             border-radius: 10px;
@@ -205,10 +166,7 @@
             font-size: 14px;
             outline: none;
         }
-
-        input:focus {
-            border-color: var(--primary-color);
-        }
+        select { appearance: none; cursor: pointer; }
 
         .btn-modern {
             width: 100%;
@@ -226,132 +184,65 @@
             gap: 10px;
             margin-bottom: 10px;
         }
+        .btn-outline { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); }
 
-        .btn-modern:active {
-            background: var(--primary-dark);
+        /* تحديات الحفظ */
+        .challenge-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .challenge-progress-bar {
+            width: 100%; height: 10px; background: var(--bg-color); border-radius: 5px; overflow: hidden; margin-bottom: 15px;
         }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #ef4444;
-        }
-
-        /* ================= لوحة الشرف ================= */
-        .leaderboard-list {
-            list-style: none;
-        }
-
-        .leaderboard-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .leaderboard-list li:last-child {
-            border-bottom: none;
-        }
-
-        .rank-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .rank-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        .challenge-progress-fill { height: 100%; background: var(--accent-color); width: 0%; transition: 0.4s; }
+        .task-list { list-style: none; }
+        .task-item {
             background: var(--bg-color);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--text-muted);
-        }
-
-        .top-1 .rank-number { background: #fbbf24; color: #000; }
-        .top-2 .rank-number { background: #cbd5e1; color: #000; }
-        .top-3 .rank-number { background: #b45309; color: #fff; }
-
-        .score-info {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        /* ================= الصوتيات ================= */
-        .audio-item {
-            display: flex;
-            flex-direction: column;
             gap: 10px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
         }
-        .audio-item:last-child { border: none; margin: 0; padding: 0; }
-        
-        .audio-title { font-size: 15px; font-weight: 600; }
-        
-        audio {
-            width: 100%;
-            height: 40px;
-            border-radius: 8px;
+        .task-item.completed { opacity: 0.6; text-decoration: line-through; border-color: var(--primary-color); }
+        .task-checkbox {
+            width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--primary-color);
+            display: flex; align-items: center; justify-content: center; color: transparent;
         }
-        audio::-webkit-media-controls-panel {
-            background-color: var(--bg-color);
-        }
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display {
-            color: var(--text-main);
-        }
+        .task-item.completed .task-checkbox { background: var(--primary-color); color: white; }
 
-        /* ================= شريط التنقل السفلي ================= */
+        /* مشغل القرآن الذكي */
+        .quran-player-container {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        audio { width: 100%; height: 45px; border-radius: 8px; margin-top: 10px; }
+        audio::-webkit-media-controls-panel { background-color: var(--surface-color); }
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display { color: var(--text-main); }
+
+        /* شريط التنقل */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            position: fixed; bottom: 0; left: 0; width: 100%;
             background-color: var(--surface-color);
-            display: flex;
-            justify-content: space-around;
+            display: flex; justify-content: space-around;
             padding: 12px 0 20px;
             border-top: 1px solid var(--border-color);
             z-index: 100;
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 25%;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            color: var(--text-muted); font-size: 11px; cursor: pointer; width: 20%;
         }
-
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 2px;
-        }
-
-        .nav-item.active {
-            color: var(--primary-color);
-        }
+        .nav-item i { font-size: 20px; transition: 0.3s; }
+        .nav-item.active { color: var(--primary-color); }
+        .nav-item.active i { transform: translateY(-3px); }
         
-        .nav-item.active i {
-            transform: translateY(-3px);
-        }
+        .leaderboard-list li { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
@@ -362,102 +253,117 @@
     </header>
 
     <main>
-        <!-- 1. تبويب المسبحة الرئيسية -->
+        <!-- 1. تبويب المسبحة -->
         <section id="tab-home" class="tab-pane active">
             <div class="tasbeeh-container">
-                <!-- الدائرة التفاعلية -->
                 <div class="progress-ring-container" id="ringContainer">
                     <div class="progress-ring-inner" id="tasbeehBtn">
                         <span class="counter-value" id="counter">0</span>
                         <span class="click-hint">اضغط للتسبيح</span>
                     </div>
                 </div>
-
                 <div class="daily-goal-info">
                     <p>الورد اليومي المنجز</p>
-                    <h3 id="goalProgressText">0 / 0</h3>
-                    <p style="font-size: 12px; margin-top: 5px; color: var(--primary-color);" id="levelNextText">باقي 100 للمستوى التالي</p>
+                    <h3 id="goalProgressText" style="color: var(--accent-color);">0 / 0</h3>
+                    <p style="font-size: 12px; margin-top: 5px; color: var(--primary-color);" id="levelNextText"></p>
                 </div>
             </div>
         </section>
 
-        <!-- 2. تبويب الصوتيات والقرآن -->
-        <section id="tab-audio" class="tab-pane">
+        <!-- 2. تبويب تحديات الحفظ (الجديد) -->
+        <section id="tab-memorize" class="tab-pane">
             <div class="modern-card">
-                <h3><i class="fa-solid fa-headphones"></i> أذكار وتلاوات</h3>
+                <h3><i class="fa-solid fa-list-check"></i> تحدي الحفظ اليومي</h3>
+                <div class="form-group">
+                    <label>اختر التحدي الذي تريده:</label>
+                    <select id="challengeSelect">
+                        <option value="mulk">تحدي حفظ سورة الملك (7 أيام)</option>
+                        <option value="kahf">تحدي حفظ سورة الكهف (10 أيام)</option>
+                    </select>
+                </div>
                 
-                <div class="audio-item">
-                    <span class="audio-title">أذكار الصباح</span>
-                    <audio controls preload="none">
-                        <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
-                    </audio>
+                <div class="challenge-header">
+                    <span style="font-size: 14px; font-weight: bold;">نسبة الإنجاز:</span>
+                    <span id="challengePercent" style="color: var(--accent-color); font-weight: bold;">0%</span>
+                </div>
+                <div class="challenge-progress-bar">
+                    <div class="challenge-progress-fill" id="challengeFill"></div>
                 </div>
 
-                <div class="audio-item">
-                    <span class="audio-title">أذكار المساء</span>
-                    <audio controls preload="none">
-                        <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-
-                <div class="audio-item">
-                    <span class="audio-title">سورة البقرة - تلاوة خاشعة</span>
-                    <audio controls preload="none">
-                        <source src="https://server8.mp3quran.net/afs/002.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. تبويب لوحة الشرف -->
-        <section id="tab-leaderboard" class="tab-pane">
-            <div class="modern-card">
-                <h3><i class="fa-solid fa-trophy"></i> المتنافسون (أعلى 5)</h3>
-                <ul class="leaderboard-list" id="leaderboardList">
-                    <li style="justify-content: center; color: var(--text-muted); font-size: 14px;">
-                        جاري جلب البيانات من السحابة...
-                    </li>
+                <ul class="task-list" id="taskList">
+                    <!-- سيتم توليد المهام هنا عبر الجافاسكربت -->
                 </ul>
             </div>
         </section>
 
-        <!-- 4. تبويب الإعدادات -->
+        <!-- 3. تبويب القرآن والصوتيات (الجديد) -->
+        <section id="tab-audio" class="tab-pane">
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-headphones"></i> مشغل القرآن الذكي</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">اختر القارئ والسورة واستمع مباشرة.</p>
+                
+                <div class="form-group">
+                    <label>اختر القارئ:</label>
+                    <select id="reciterSelect">
+                        <option value="https://server8.mp3quran.net/afs/">مشاري راشد العفاسي</option>
+                        <option value="https://server12.mp3quran.net/maher/">ماهر المعيقلي</option>
+                        <option value="https://server7.mp3quran.net/basit/">عبدالباسط عبدالصمد (مرتل)</option>
+                        <option value="https://server11.mp3quran.net/yasser/">ياسر الدوسري</option>
+                        <option value="https://server10.mp3quran.net/saud/">سعود الشريم</option>
+                        <option value="https://server11.mp3quran.net/shur/">شيرزاد عبدالرحمن طاهر</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>اختر السورة:</label>
+                    <select id="surahSelect">
+                        <!-- سيتم توليد الـ 114 سورة هنا -->
+                    </select>
+                </div>
+
+                <div class="quran-player-container">
+                    <h4 id="currentSurahName" style="color: var(--accent-color); margin-bottom: 5px;">سورة الفاتحة</h4>
+                    <audio id="quranAudio" controls preload="none">
+                        <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
+                        متصفحك لا يدعم المشغل.
+                    </audio>
+                </div>
+                
+                <button class="btn-modern" id="playQuranBtn" style="margin-top: 15px;">
+                    <i class="fa-solid fa-play"></i> تشغيل التلاوة
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. تبويب المنافسة -->
+        <section id="tab-leaderboard" class="tab-pane">
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-trophy"></i> لوحة الشرف (أعلى 5)</h3>
+                <ul class="leaderboard-list" id="leaderboardList">
+                    <li style="justify-content: center; color: var(--text-muted); font-size: 14px;">جاري الجلب...</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. تبويب الإعدادات -->
         <section id="tab-settings" class="tab-pane">
             <div class="modern-card">
                 <h3><i class="fa-solid fa-user-gear"></i> إعدادات الحساب</h3>
-                
                 <div class="form-group">
-                    <label>الاسم (للمنافسة في لوحة الشرف)</label>
-                    <input type="text" id="userNameInput" placeholder="أدخل اسمك هنا...">
+                    <label>اسمك (للمنافسة):</label>
+                    <input type="text" id="userNameInput">
                 </div>
-
                 <div class="form-group">
-                    <label>الهدف اليومي للتسبيح</label>
-                    <input type="number" id="dailyGoalInput" placeholder="مثال: 1000">
+                    <label>الهدف اليومي للتسبيح:</label>
+                    <input type="number" id="dailyGoalInput">
                 </div>
-
-                <button class="btn-modern" id="saveSettingsBtn">
-                    <i class="fa-solid fa-floppy-disk"></i> حفظ الإعدادات
-                </button>
+                <button class="btn-modern" id="saveSettingsBtn">حفظ الإعدادات</button>
             </div>
 
             <div class="modern-card">
-                <h3><i class="fa-solid fa-cloud-arrow-up"></i> البيانات والمزامنة</h3>
-                <button class="btn-modern btn-outline" id="syncBtn">
-                    <i class="fa-solid fa-rotate"></i> مزامنة التقدم الآن
-                </button>
+                <h3><i class="fa-solid fa-cloud-arrow-up"></i> البيانات</h3>
+                <button class="btn-modern btn-outline" id="syncBtn">مزامنة التقدم للسحابة</button>
                 <div id="syncStatus" style="text-align: center; font-size: 12px; margin-top: 10px; color: var(--primary-color);"></div>
-                
-                <button class="btn-modern btn-outline" id="shareBtn" style="margin-top: 10px; border-color: var(--accent-color); color: var(--accent-color);">
-                    <i class="fa-solid fa-share-nodes"></i> مشاركة التطبيق والأجر
-                </button>
-            </div>
-
-            <div class="modern-card">
-                <h3><i class="fa-solid fa-triangle-exclamation"></i> منطقة الخطر</h3>
-                <button class="btn-modern btn-danger" id="resetBtn">
-                    <i class="fa-solid fa-trash-can"></i> تصفير العداد والبدء من جديد
-                </button>
             </div>
         </section>
     </main>
@@ -468,9 +374,13 @@
             <i class="fa-solid fa-ring"></i>
             <span>المسبحة</span>
         </div>
+        <div class="nav-item" data-target="tab-memorize">
+            <i class="fa-solid fa-book-open-reader"></i>
+            <span>تحدي الحفظ</span>
+        </div>
         <div class="nav-item" data-target="tab-audio">
-            <i class="fa-solid fa-book-quran"></i>
-            <span>قرآن وأذكار</span>
+            <i class="fa-solid fa-headphones-simple"></i>
+            <span>الصوتيات</span>
         </div>
         <div class="nav-item" data-target="tab-leaderboard">
             <i class="fa-solid fa-ranking-star"></i>
@@ -478,172 +388,215 @@
         </div>
         <div class="nav-item" data-target="tab-settings">
             <i class="fa-solid fa-gear"></i>
-            <span>الإعدادات</span>
+            <span>إعدادات</span>
         </div>
     </nav>
 
     <script>
-        // ================= الإعدادات البرمجية =================
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwf1K1a57gkK_QWJGz_4PJuQWjcio8dO68o2V3L-WVhY20aeDHFE9pEmTx7IUrhK2TKQw/exec'; // ضع رابط Google Apps Script الخاص بك
+        // ================= 1. الإعدادات الأساسية =================
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwf1K1a57gkK_QWJGz_4PJuQWjcio8dO68o2V3L-WVhY20aeDHFE9pEmTx7IUrhK2TKQw/exec';
         const TARGET_PER_LEVEL = 100;
         const levelNames = ["البداية", "الذاكرين", "المستغفرين", "المقربين", "حفظ جزء عم", "حفظ جزء تبارك", "حفظ جزء قد سمع", "حفاظ القرآن"];
 
-        // قراءة البيانات من الهاتف
         let count = parseInt(localStorage.getItem('tasbeehCount')) || 0;
-        let dailyGoal = parseInt(localStorage.getItem('dailyGoal')) || 100; // هدف افتراضي
+        let dailyGoal = parseInt(localStorage.getItem('dailyGoal')) || 100;
         let userName = localStorage.getItem('userName') || "فاعل خير";
         let currentLevel = 1;
 
-        // ================= التنقل بين التبويبات =================
+        // ================= 2. التنقل بين التبويبات =================
         const navItems = document.querySelectorAll('.nav-item');
         const tabPanes = document.querySelectorAll('.tab-pane');
 
         navItems.forEach(item => {
             item.addEventListener('click', () => {
-                // إزالة التفعيل من الجميع
                 navItems.forEach(nav => nav.classList.remove('active'));
                 tabPanes.forEach(pane => pane.classList.remove('active'));
-                
-                // تفعيل التبويب المطلوب
                 item.classList.add('active');
                 const targetId = item.getAttribute('data-target');
                 document.getElementById(targetId).classList.add('active');
-
-                // تحديث لوحة الشرف إذا تم فتحها
+                
                 if(targetId === 'tab-leaderboard') fetchLeaderboard();
             });
         });
 
-        // ================= تحديث واجهة المستخدم =================
+        // ================= 3. المسبحة وتحديث الواجهة =================
         function updateUI() {
-            // 1. تحديث الرقم
             document.getElementById('counter').textContent = count;
             
-            // 2. تحديث المستوى
             currentLevel = Math.floor(count / TARGET_PER_LEVEL) + 1;
             let levelIndex = currentLevel - 1;
             if (levelIndex >= levelNames.length) levelIndex = levelNames.length - 1;
-            document.getElementById('levelDisplay').textContent = `مستوى ${currentLevel}: ${levelNames[levelIndex]}`;
+            document.getElementById('levelDisplay').textContent = `مستوى ${currentLevel}`;
             
             let progressInLevel = count % TARGET_PER_LEVEL;
             document.getElementById('levelNextText').textContent = `باقي ${TARGET_PER_LEVEL - progressInLevel} للمستوى التالي`;
-
-            // 3. تحديث الهدف اليومي
             document.getElementById('goalProgressText').textContent = `${count} / ${dailyGoal}`;
             
-            // 4. تحديث الحلقة الدائرية (Progress Ring)
-            // نحسب النسبة المئوية للمستوى الحالي لتعبئة الدائرة
             let ringPercentage = (progressInLevel / TARGET_PER_LEVEL) * 100;
-            const ringContainer = document.getElementById('ringContainer');
-            ringContainer.style.background = `conic-gradient(var(--primary-color) ${ringPercentage}%, var(--surface-color) 0%)`;
+            document.getElementById('ringContainer').style.background = `conic-gradient(var(--primary-color) ${ringPercentage}%, var(--surface-color) 0%)`;
 
-            // حفظ التغييرات محلياً
             localStorage.setItem('tasbeehCount', count);
             localStorage.setItem('userLevel', currentLevel);
         }
 
-        // ================= أزرار التفاعل =================
-        // زر التسبيح (الدائرة الكبيرة)
         document.getElementById('tasbeehBtn').addEventListener('click', () => {
-            count++;
-            updateUI();
-            if (navigator.vibrate) navigator.vibrate(40); // اهتزاز خفيف
+            count++; updateUI();
+            if (navigator.vibrate) navigator.vibrate(40);
         });
 
-        // إعدادات الحساب
+        // ================= 4. تحديات الحفظ (المنطق البرمجي) =================
+        const challenges = {
+            mulk: [
+                "اليوم 1: الآيات 1 إلى 5", "اليوم 2: الآيات 6 إلى 11", "اليوم 3: الآيات 12 إلى 15",
+                "اليوم 4: الآيات 16 إلى 21", "اليوم 5: الآيات 22 إلى 26", "اليوم 6: الآيات 27 إلى 30",
+                "اليوم 7: مراجعة السورة كاملة"
+            ],
+            kahf: [
+                "اليوم 1: الآيات 1 إلى 10", "اليوم 2: الآيات 11 إلى 20", "اليوم 3: الآيات 21 إلى 31",
+                "اليوم 4: الآيات 32 إلى 44", "اليوم 5: الآيات 45 إلى 59", "اليوم 6: الآيات 60 إلى 74",
+                "اليوم 7: الآيات 75 إلى 82", "اليوم 8: الآيات 83 إلى 98", "اليوم 9: الآيات 99 إلى 110",
+                "اليوم 10: مراجعة السورة كاملة"
+            ]
+        };
+
+        const challengeSelect = document.getElementById('challengeSelect');
+        const taskList = document.getElementById('taskList');
+        
+        function loadChallenge() {
+            const selected = challengeSelect.value;
+            const tasks = challenges[selected];
+            let savedProgress = JSON.parse(localStorage.getItem(`challenge_${selected}`)) || [];
+            
+            taskList.innerHTML = '';
+            let completedCount = 0;
+
+            tasks.forEach((task, index) => {
+                const isCompleted = savedProgress.includes(index);
+                if(isCompleted) completedCount++;
+
+                const li = document.createElement('li');
+                li.className = `task-item ${isCompleted ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <div class="task-checkbox"><i class="fa-solid fa-check"></i></div>
+                    <span style="font-size: 14px; font-weight: bold;">${task}</span>
+                `;
+                
+                li.addEventListener('click', () => {
+                    if (li.classList.contains('completed')) {
+                        li.classList.remove('completed');
+                        savedProgress = savedProgress.filter(i => i !== index);
+                    } else {
+                        li.classList.add('completed');
+                        savedProgress.push(index);
+                        if (navigator.vibrate) navigator.vibrate([30, 50, 30]); // اهتزاز احتفالي
+                    }
+                    localStorage.setItem(`challenge_${selected}`, JSON.stringify(savedProgress));
+                    updateChallengeProgress(tasks.length, savedProgress.length);
+                });
+                taskList.appendChild(li);
+            });
+            updateChallengeProgress(tasks.length, completedCount);
+        }
+
+        function updateChallengeProgress(total, completed) {
+            const percent = Math.round((completed / total) * 100);
+            document.getElementById('challengePercent').textContent = percent + '%';
+            document.getElementById('challengeFill').style.width = percent + '%';
+        }
+
+        challengeSelect.addEventListener('change', loadChallenge);
+
+        // ================= 5. مشغل القرآن الذكي =================
+        const surahNames = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+            "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+            "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+            "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+            "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+            "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+            "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+            "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+            "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+            "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+            "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر",
+            "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        const surahSelect = document.getElementById('surahSelect');
+        const reciterSelect = document.getElementById('reciterSelect');
+        const quranAudio = document.getElementById('quranAudio');
+        const currentSurahName = document.getElementById('currentSurahName');
+
+        // توليد قائمة السور
+        surahNames.forEach((name, index) => {
+            const option = document.createElement('option');
+            option.value = index + 1; // رقم السورة
+            option.textContent = `${index + 1}. سورة ${name}`;
+            surahSelect.appendChild(option);
+        });
+
+        // دالة تحويل الرقم لثلاث خانات (مثال: 1 يصبح 001) مطلوبة لخوادم الصوتيات
+        function pad(num, size) {
+            let s = num + "";
+            while (s.length < size) s = "0" + s;
+            return s;
+        }
+
+        document.getElementById('playQuranBtn').addEventListener('click', () => {
+            const reciterUrl = reciterSelect.value; // الرابط الأساسي للقارئ
+            const surahNumber = pad(surahSelect.value, 3); // رقم السورة المنسق
+            
+            // تحديث اسم السورة المعروض
+            currentSurahName.textContent = "سورة " + surahNames[surahSelect.value - 1];
+            
+            // دمج الرابط وتشغيل الصوت
+            quranAudio.src = `${reciterUrl}${surahNumber}.mp3`;
+            quranAudio.play();
+        });
+
+        // ================= 6. الإعدادات والمزامنة =================
         document.getElementById('userNameInput').value = userName !== "فاعل خير" ? userName : "";
         document.getElementById('dailyGoalInput').value = dailyGoal;
 
         document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-            const inputName = document.getElementById('userNameInput').value.trim();
-            const inputGoal = parseInt(document.getElementById('dailyGoalInput').value);
-            
-            if (inputName) { userName = inputName; localStorage.setItem('userName', userName); }
-            if (inputGoal && inputGoal > 0) { dailyGoal = inputGoal; localStorage.setItem('dailyGoal', dailyGoal); }
-            
+            userName = document.getElementById('userNameInput').value || "فاعل خير";
+            dailyGoal = parseInt(document.getElementById('dailyGoalInput').value) || 100;
+            localStorage.setItem('userName', userName);
+            localStorage.setItem('dailyGoal', dailyGoal);
             updateUI();
-            
-            const btn = document.getElementById('saveSettingsBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> تم الحفظ';
-            btn.style.background = '#059669';
-            setTimeout(() => { btn.innerHTML = originalText; btn.style.background = 'var(--primary-color)'; }, 2000);
+            alert("تم حفظ الإعدادات!");
         });
 
-        // تصفير العداد
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            if(confirm('هل أنت متأكد من تصفير العداد بالكامل؟')) {
-                count = 0;
-                updateUI();
-            }
-        });
-
-        // مشاركة
-        document.getElementById('shareBtn').addEventListener('click', async () => {
-            const text = `الحمد لله أتممت ${count} تسبيحة في تطبيق زاد المسلم ووصلت لمستوى ${currentLevel}. شاركني الأجر!`;
-            if (navigator.share) {
-                try { await navigator.share({ title: 'زاد المسلم', text: text, url: window.location.href }); } catch (err) {}
-            } else {
-                alert('انسخ هذا النص:\n' + text);
-            }
-        });
-
-        // ================= الاتصال بقاعدة البيانات =================
         async function syncData() {
             if (GAS_URL === 'ضع_رابط_ويب_آب_جوجل_هنا') return;
-            const payload = { userName: userName, tasbeehCount: count, level: currentLevel };
             try {
                 await fetch(GAS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
+                    method: 'POST', mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ userName: userName, tasbeehCount: count, level: currentLevel })
                 });
-                const statusEl = document.getElementById('syncStatus');
-                statusEl.textContent = 'تم مزامنة بياناتك بنجاح مع السحابة ✓';
-                setTimeout(() => statusEl.textContent = '', 3000);
-            } catch (error) {
-                console.error(error);
-            }
+                document.getElementById('syncStatus').textContent = 'تم المزامنة ✓';
+                setTimeout(() => document.getElementById('syncStatus').textContent = '', 3000);
+            } catch (e) {}
         }
-
         document.getElementById('syncBtn').addEventListener('click', syncData);
 
-        // جلب لوحة الشرف
         async function fetchLeaderboard() {
-            if (GAS_URL === 'ضع_رابط_ويب_آب_جوجل_هنا') {
-                document.getElementById('leaderboardList').innerHTML = '<li style="justify-content:center; color:red; font-size:13px;">يرجى وضع رابط جوجل شيت في الكود لتعمل الميزة</li>';
-                return;
-            }
+            if (GAS_URL === 'ضع_رابط_ويب_آب_جوجل_هنا') return;
             try {
                 const response = await fetch(GAS_URL);
                 const data = await response.json();
                 const list = document.getElementById('leaderboardList');
                 list.innerHTML = '';
-                
                 data.forEach((user, index) => {
-                    let liClass = index === 0 ? 'top-1' : index === 1 ? 'top-2' : index === 2 ? 'top-3' : '';
-                    list.innerHTML += `
-                        <li class="${liClass}">
-                            <div class="rank-info">
-                                <span class="rank-number">${index + 1}</span>
-                                <span class="user-name">${user.userName}</span>
-                            </div>
-                            <span class="score-info">${user.tasbeehCount}</span>
-                        </li>`;
+                    list.innerHTML += `<li style="padding: 10px 0;"><b>${index + 1}. ${user.userName}</b> <span style="color:var(--primary-color)">${user.tasbeehCount}</span></li>`;
                 });
-            } catch (error) {
-                document.getElementById('leaderboardList').innerHTML = '<li style="justify-content:center; font-size:14px;">حدث خطأ في جلب البيانات.</li>';
-            }
+            } catch (error) {}
         }
 
-        // تشغيل أولي
+        // التهيئة الأولية
         updateUI();
-        
-        // حفظ تلقائي للبيانات عند الخروج
-        window.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') syncData();
-        });
+        loadChallenge();
 
     </script>
 </body>
