@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>زاد المسلم - تطبيق متكامل</title>
+    <style>
+        :root {
+            --dark-blue: #0A192F;
+            --gold: #D4AF37;
+            --white: #FFFFFF;
+            --light-blue: #172A45;
+            --text-color: #FFFFFF;
+            --bg-color: #0A192F;
+            --card-bg: #172A45;
+        }
+
+        .dark-mode-theme {
+            --dark-blue: #FFFFFF;
+            --gold: #0A192F;
+            --white: #0A192F;
+            --light-blue: #F0F0F0;
+            --text-color: #0A192F;
+            --bg-color: #FFFFFF;
+            --card-bg: #F0F0F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--gold);
+            font-size: 20px;
+        }
+
+        .level-indicator {
+            font-size: 12px;
+            background-color: var(--gold);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .theme-btn, .notify-btn {
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        main {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: var(--gold);
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .counter-display {
+            font-size: 60px;
+            font-weight: bold;
+            color: var(--gold);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: var(--gold);
+            color: var(--bg-color);
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            height: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--gold);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .message-box {
+            font-size: 12px;
+            text-align: center;
+            color: #4CAF50;
+            min-height: 15px;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-list li {
+            padding: 10px;
+            border-bottom: 1px solid var(--gold);
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        audio {
+            width: 100%;
+            height: 35px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="theme-btn" id="themeToggle">وضع ليلي</button>
+        <h1>زاد المسلم</h1>
+        <div class="level-indicator" id="levelDisplay">المستوى: ١</div>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>إعدادات الحساب</h2>
+            <input type="text" id="userNameInput" placeholder="أدخل اسمك للمنافسة في لوحة الشرف">
+            <button class="btn btn-outline" id="saveNameBtn" style="padding: 10px; font-size: 14px;">حفظ الاسم</button>
+            <button class="notify-btn" id="notifyBtn" style="width: 100%; margin-top: 10px; padding: 10px;">تفعيل الإشعارات والتذكير</button>
+        </section>
+
+        <section class="card">
+            <h2>الهدف اليومي</h2>
+            <input type="number" id="dailyGoalInput" placeholder="حدد هدفك اليومي (مثال: 1000)">
+            <button class="btn btn-outline" id="setGoalBtn" style="padding: 10px; font-size: 14px;">تحديد الهدف</button>
+            <div class="progress-container" style="margin-top: 15px;">
+                <div class="progress-bar" id="goalProgressBar" style="background-color: #4CAF50;"></div>
+            </div>
+            <div class="message-box" id="goalMessage">لم تحدد هدفاً بعد</div>
+        </section>
+
+        <section class="card">
+            <h2>المسبحة الإلكترونية</h2>
+            <div class="counter-display" id="counter">0</div>
+            <button class="btn" id="tasbeehBtn">سبّح / استغفر</button>
+            <button class="btn btn-outline" id="resetBtn">تصفير العداد</button>
+            <button class="btn btn-outline" id="shareBtn">مشاركة الأجر</button>
+            <button class="btn btn-outline" id="syncBtn">حفظ في السحابة يدوياً</button>
+            <div id="syncStatus" class="message-box"></div>
+        </section>
+
+        <section class="card">
+            <h2>رحلة الحفظ (كل 100 تسبيحة = مستوى)</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="levelProgressBar"></div>
+            </div>
+            <div class="message-box" id="nextLevelMsg" style="color: var(--text-color);"></div>
+        </section>
+
+        <section class="card">
+            <h2>🏆 لوحة الشرف (أعلى 5)</h2>
+            <ul class="leaderboard-list" id="leaderboardList">
+                <li>جاري جلب البيانات...</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>صوتيات وأذكار</h2>
+            <p style="font-size: 14px; margin-bottom: 5px;">سورة البقرة</p>
+            <audio controls>
+                <source src="https://server8.mp3quran.net/afs/002.mp3" type="audio/mpeg">
+            </audio>
+            <p style="font-size: 14px; margin-bottom: 5px;">أذكار الصباح</p>
+            <audio controls>
+                <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+    </main>
+
+    <script>
+        // ---------------- الإعدادات الأساسية ----------------
+        // ضع رابط الـ Web App الخاص بـ Google Apps Script هنا
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwf1K1a57gkK_QWJGz_4PJuQWjcio8dO68o2V3L-WVhY20aeDHFE9pEmTx7IUrhK2TKQw/exec';
+        
+        let count = parseInt(localStorage.getItem('tasbeehCount')) || 0;
+        let currentLevel = parseInt(localStorage.getItem('userLevel')) || 1;
+        let dailyGoal = parseInt(localStorage.getItem('dailyGoal')) || 0;
+        let userName = localStorage.getItem('userName') || "فاعل خير";
+        const TARGET_PER_LEVEL = 100;
+
+        const levelNames = ["البداية", "الذاكرين", "المستغفرين", "المقربين", "حفظ جزء عم", "حفظ جزء تبارك", "حفظ جزء قد سمع", "حفاظ القرآن"];
+
+        // ---------------- تهيئة الواجهة ----------------
+        document.getElementById('userNameInput').value = userName !== "فاعل خير" ? userName : "";
+        if(dailyGoal > 0) document.getElementById('dailyGoalInput').value = dailyGoal;
+
+        if (localStorage.getItem('theme') === 'dark-mode-theme') {
+            document.body.classList.add('dark-mode-theme');
+        }
+
+        // ---------------- التحديث المستمر للواجهة ----------------
+        function updateUI() {
+            // تحديث العداد
+            document.getElementById('counter').textContent = count;
+            
+            // تحديث المستوى
+            currentLevel = Math.floor(count / TARGET_PER_LEVEL) + 1;
+            let levelIndex = currentLevel - 1;
+            if (levelIndex >= levelNames.length) levelIndex = levelNames.length - 1;
+            
+            document.getElementById('levelDisplay').textContent = `المستوى: ${currentLevel} (${levelNames[levelIndex]})`;
+            
+            // شريط تقدم المستوى
+            let progressInLevel = count % TARGET_PER_LEVEL;
+            let levelPercentage = (progressInLevel / TARGET_PER_LEVEL) * 100;
+            document.getElementById('levelProgressBar').style.width = levelPercentage + '%';
+            document.getElementById('nextLevelMsg').textContent = `متبقي ${TARGET_PER_LEVEL - progressInLevel} للوصول للمستوى التالي`;
+
+            // شريط الهدف اليومي
+            if (dailyGoal > 0) {
+                let goalPercentage = Math.min((count / dailyGoal) * 100, 100);
+                document.getElementById('goalProgressBar').style.width = goalPercentage + '%';
+                
+                if (count >= dailyGoal) {
+                    document.getElementById('goalMessage').textContent = '🎉 مبروك! أتممت وردك اليومي';
+                } else {
+                    document.getElementById('goalMessage').textContent = `متبقي ${dailyGoal - count} لإتمام الورد`;
+                }
+            }
+
+            // حفظ محلي
+            localStorage.setItem('tasbeehCount', count);
+            localStorage.setItem('userLevel', currentLevel);
+        }
+
+        // ---------------- أزرار التفاعل ----------------
+        // التسبيح
+        document.getElementById('tasbeehBtn').addEventListener('click', () => {
+            count++;
+            updateUI();
+            if (navigator.vibrate) navigator.vibrate(50); // اهتزاز ذكي للهاتف
+        });
+
+        // التصفير
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if(confirm('هل أنت متأكد من تصفير العداد؟')) {
+                count = 0;
+                updateUI();
+            }
+        });
+
+        // حفظ الاسم
+        document.getElementById('saveNameBtn').addEventListener('click', () => {
+            const inputName = document.getElementById('userNameInput').value.trim();
+            if (inputName) {
+                userName = inputName;
+                localStorage.setItem('userName', userName);
+                alert('تم حفظ الاسم للوحة الشرف');
+            }
+        });
+
+        // تحديد الهدف اليومي
+        document.getElementById('setGoalBtn').addEventListener('click', () => {
+            const inputGoal = parseInt(document.getElementById('dailyGoalInput').value);
+            if (inputGoal && inputGoal > 0) {
+                dailyGoal = inputGoal;
+                localStorage.setItem('dailyGoal', dailyGoal);
+                updateUI();
+                alert('تم تحديد الهدف اليومي بنجاح');
+            }
+        });
+
+        // الوضع الليلي
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode-theme');
+            if (document.body.classList.contains('dark-mode-theme')) {
+                localStorage.setItem('theme', 'dark-mode-theme');
+            } else {
+                localStorage.removeItem('theme');
+            }
+        });
+
+        // مشاركة الأجر
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            const shareText = `أتممت ${count} تسبيحة في زاد المسلم. شاركني الأجر وابدأ الآن!`;
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'زاد المسلم', text: shareText, url: window.location.href });
+                } catch (err) {}
+            } else {
+                alert('انسخ النص:\n' + shareText);
+            }
+        });
+
+        // ---------------- الإشعارات الذكية ----------------
+        document.getElementById('notifyBtn').addEventListener('click', () => {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        alert("تم تفعيل الإشعارات بنجاح");
+                    }
+                });
+            } else {
+                alert("متصفحك لا يدعم الإشعارات");
+            }
+        });
+
+        // تذكير المستخدم إذا كان الموقع مفتوحاً ولم يسبح لفترة
+        setInterval(() => {
+            if (count < 10 && Notification.permission === "granted") {
+                new Notification("زاد المسلم", { body: "لم تسبح اليوم كثيراً، لا تفوت الأجر!" });
+            }
+        }, 3600000); // كل ساعة
+
+        // ---------------- الاتصال بقاعدة البيانات (Google Sheets) ----------------
+        
+        // دالة المزامنة ورفع البيانات
+        async function syncData() {
+            if (GAS_URL === 'ضع_رابط_ويب_آب_جوجل_هنا') return;
+            
+            const payload = {
+                userName: userName,
+                tasbeehCount: count,
+                level: currentLevel
+            };
+
+            try {
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                document.getElementById('syncStatus').textContent = 'تم الحفظ في السحابة!';
+                setTimeout(() => document.getElementById('syncStatus').textContent = '', 3000);
+            } catch (error) {
+                console.error("Error syncing data", error);
+            }
+        }
+
+        document.getElementById('syncBtn').addEventListener('click', syncData);
+
+        // الحفظ التلقائي عند إغلاق أو تحديث الصفحة
+        window.addEventListener('beforeunload', () => {
+            syncData();
+        });
+
+        // جلب لوحة الشرف
+        async function fetchLeaderboard() {
+            if (GAS_URL === 'ضع_رابط_ويب_آب_جوجل_هنا') {
+                document.getElementById('leaderboardList').innerHTML = '<li>يرجى ربط قاعدة البيانات أولاً</li>';
+                return;
+            }
+            try {
+                const response = await fetch(GAS_URL);
+                const data = await response.json();
+                
+                const list = document.getElementById('leaderboardList');
+                list.innerHTML = '';
+                
+                data.forEach((user, index) => {
+                    let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹';
+                    list.innerHTML += `<li><span>${medal} ${user.userName}</span> <span>${user.tasbeehCount} تسبيحة</span></li>`;
+                });
+            } catch (error) {
+                document.getElementById('leaderboardList').innerHTML = '<li>تعذر جلب البيانات. تأكد من الرابط أو الإنترنت.</li>';
+            }
+        }
+
+        // ---------------- تشغيل الدوال عند البداية ----------------
+        updateUI();
+        fetchLeaderboard();
+        
+    </script>
+</body>
+</html>
