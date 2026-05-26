@@ -2,144 +2,316 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الإدارة المركزية - زاد المسلم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>زاد المسلم - الإصدار الشامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --surface: #1e293b;
-            --primary: #10b981;
-            --text: #f8fafc;
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary-color: #10b981;
+            --primary-dark: #059669;
+            --accent-color: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
         }
-        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-dark); color: var(--text); padding: 20px; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        header { padding: 20px 20px 10px; display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-color); z-index: 10; }
+        header h1 { font-size: 22px; font-weight: 800; color: var(--primary-color); }
+        .level-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+        main { flex: 1; overflow-y: auto; padding: 0 20px 90px; position: relative; }
+        .tab-pane { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* البطاقات العامة */
+        .modern-card { background-color: var(--surface-color); border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border-color); }
+        .modern-card h3 { font-size: 16px; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+
+        /* 1. المسبحة والخريطة الحرارية (Heatmap) */
+        .tasbeeh-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px; }
+        .progress-ring-container { position: relative; width: 220px; height: 220px; border-radius: 50%; background: conic-gradient(var(--primary-color) 0%, var(--surface-color) 0%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2); }
+        .progress-ring-inner { width: 200px; height: 200px; background-color: var(--bg-color); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); }
+        .progress-ring-inner:active { transform: scale(0.96); }
+        .counter-value { font-size: 55px; font-weight: 800; color: var(--text-main); line-height: 1; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
+        .heatmap-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 15px; }
+        .heat-box { width: 100%; aspect-ratio: 1; border-radius: 4px; background: var(--bg-color); }
+
+        /* 2. التلاوة التفاعلية */
+        .interactive-quran { background: var(--bg-color); padding: 15px; border-radius: 12px; font-size: 20px; line-height: 2; text-align: center; border: 1px solid var(--border-color); margin-top: 15px; font-family: 'Amiri', serif; }
+        .quran-word { transition: color 0.3s; }
+        .quran-word.active { color: var(--accent-color); font-weight: bold; background: rgba(251, 191, 36, 0.1); border-radius: 5px; padding: 0 5px; }
+        audio { width: 100%; height: 45px; border-radius: 8px; outline: none; }
+
+        /* 3. الذكاء الاصطناعي والواقع المعزز */
+        .ai-chat-box { background: var(--bg-color); border-radius: 12px; height: 200px; overflow-y: auto; padding: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .chat-msg { padding: 10px 15px; border-radius: 15px; font-size: 13px; max-width: 85%; }
+        .msg-user { background: var(--primary-dark); color: white; align-self: flex-start; border-bottom-right-radius: 0; }
+        .msg-ai { background: var(--surface-color); color: var(--text-main); align-self: flex-end; border-bottom-left-radius: 0; border: 1px solid var(--border-color); }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); }
+        .btn-send { background: var(--primary-color); border: none; width: 45px; border-radius: 10px; color: white; cursor: pointer; }
+
+        .ar-btn { background: linear-gradient(45deg, #10b981, #0ea5e9); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
+
+        /* 4. المجتمعات (Guilds) */
+        .guild-card { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .guild-info h4 { color: var(--accent-color); font-size: 15px; }
+        .guild-info p { font-size: 12px; color: var(--text-muted); }
+        .guild-score { font-weight: bold; color: var(--primary-color); font-size: 18px; }
+
+        /* 5. إنترنت الأشياء والإعدادات */
+        .iot-btn { background: transparent; border: 2px solid #ef4444; color: #ef4444; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
         
-        /* شاشة الدخول */
-        #loginScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; }
-        #loginScreen input { padding: 12px; border-radius: 8px; border: none; outline: none; margin-bottom: 15px; width: 250px; text-align: center; }
-        #loginScreen button { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        /* لوحة التحكم */
-        #dashboard { display: none; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-card { background: var(--surface); padding: 20px; border-radius: 10px; text-align: center; border-left: 4px solid var(--primary); }
-        .stat-card h3 { color: #94a3b8; font-size: 14px; margin-bottom: 10px; }
-        .stat-card .value { font-size: 28px; font-weight: bold; color: var(--primary); }
-        
-        /* جدول البيانات */
-        .table-container { background: var(--surface); border-radius: 10px; overflow-x: auto; padding: 15px; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { text-align: right; padding: 12px; border-bottom: 1px solid #334155; }
-        th { color: var(--primary); font-size: 14px; }
-        tr:hover { background-color: rgba(255,255,255,0.02); }
-        .private-data { color: #fbbf24; font-family: monospace; }
+        select, input[type="number"], input[type="text"] { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); margin-bottom: 10px; }
+        .btn-modern { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary-color); color: white; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--surface-color); display: flex; justify-content: space-around; padding: 12px 0 20px; border-top: 1px solid var(--border-color); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 10px; cursor: pointer; width: 20%; font-weight: 600; }
+        .nav-item i { font-size: 18px; transition: 0.3s; }
+        .nav-item.active { color: var(--primary-color); }
+        .nav-item.active i { transform: translateY(-3px); }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2>مركز الإدارة والتحكم</h2>
-        <span style="font-size: 12px; color: #94a3b8;">خاص بالإدارة العليا</span>
-    </div>
+    <header>
+        <h1>زاد المسلم</h1>
+        <div class="level-badge" id="levelDisplay">المستوى ١</div>
+    </header>
 
-    <!-- شاشة تسجيل الدخول -->
-    <div id="loginScreen">
-        <h3 style="margin-bottom: 20px;">الرجاء إدخال رمز الوصول</h3>
-        <input type="password" id="adminPass" placeholder="كلمة المرور">
-        <button onclick="fetchAdminData()">تسجيل الدخول</button>
-        <p id="loginError" style="color: #ef4444; margin-top: 15px; display: none;">كلمة المرور غير صحيحة</p>
-    </div>
-
-    <!-- لوحة البيانات -->
-    <div id="dashboard">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>إجمالي المستخدمين</h3>
-                <div class="value" id="totalUsers">0</div>
+    <main>
+        <!-- 1. المسبحة والتتبع الحراري -->
+        <section id="tab-home" class="tab-pane active">
+            <div class="tasbeeh-container">
+                <div class="progress-ring-container" id="ringContainer">
+                    <div class="progress-ring-inner" id="tasbeehBtn">
+                        <span class="counter-value" id="counter">0</span>
+                        <span style="font-size: 12px; color: var(--text-muted);">سبّح واستغفر</span>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>إجمالي التسبيحات للمنصة</h3>
-                <div class="value" id="totalTasbeeh">0</div>
-            </div>
-        </div>
 
-        <div class="table-container">
-            <h3 style="margin-bottom: 15px; color: #94a3b8;">سجل المستخدمين (بيانات كاملة)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>الاسم</th>
-                        <th>عدد التسبيحات</th>
-                        <th>المستوى</th>
-                        <th>رقم التواصل (سري)</th>
-                        <th>آخر نشاط</th>
-                    </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                    <!-- سيتم تعبئة البيانات هنا -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <div class="modern-card" style="margin-top: 20px;">
+                <h3><i class="fa-solid fa-fire"></i> نشاطك آخر 30 يوماً</h3>
+                <p style="font-size: 11px; color: var(--text-muted);">حافظ على السلسلة الخضراء ولا تقطع وردك.</p>
+                <div class="heatmap-grid" id="heatmapGrid">
+                    <!-- سيتم توليد المربعات برمجياً -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. التلاوة التفاعلية -->
+        <section id="tab-quran" class="tab-pane">
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-book-open"></i> التلاوة التفاعلية الذكية</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">استمع وتابع التظليل مع القارئ لتصحيح التلاوة.</p>
+                
+                <select id="reciterSelect">
+                    <option value="https://server8.mp3quran.net/afs/001.mp3">مشاري العفاسي - الفاتحة</option>
+                </select>
+
+                <audio id="quranAudio" controls preload="none">
+                    <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
+                </audio>
+
+                <div class="interactive-quran" id="interactiveText">
+                    <!-- سيتم توليد الكلمات برمجياً لتتفاعل مع الصوت -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. الذكاء الاصطناعي والقبلة -->
+        <section id="tab-ai" class="tab-pane">
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-compass"></i> قبلة الواقع المعزز (AR)</h3>
+                <button class="ar-btn" onclick="alert('سيتم فتح الكاميرا وتحديد القبلة عبر مستشعرات الهاتف (يتطلب مكتبة AR.js برمجياً)')">
+                    <i class="fa-solid fa-vr-cardboard"></i> فتح كاميرا القبلة
+                </button>
+            </div>
+
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-robot"></i> المساعد الإسلامي (AI)</h3>
+                <div class="ai-chat-box" id="chatBox">
+                    <div class="chat-msg msg-ai">السلام عليكم! أنا المساعد الذكي. اسألني عن تفسير آية أو فقه.</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="aiInput" placeholder="اكتب سؤالك هنا...">
+                    <button class="btn-send" id="sendAiBtn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. المجتمعات (Guilds) -->
+        <section id="tab-community" class="tab-pane">
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-users-rays"></i> منافسة المجتمعات (Guilds)</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">انضم لمجتمع وساهم في رفع رصيده الإجمالي.</p>
+                
+                <div class="guild-card">
+                    <div class="guild-info">
+                        <h4><i class="fa-solid fa-crown" style="color: #fbbf24;"></i> كتيبة الذاكرين</h4>
+                        <p>124 عضو نشط</p>
+                    </div>
+                    <div class="guild-score">150K</div>
+                </div>
+
+                <div class="guild-card">
+                    <div class="guild-info">
+                        <h4><i class="fa-solid fa-book-quran" style="color: var(--primary-color);"></i> حملة القرآن</h4>
+                        <p>89 عضو نشط</p>
+                    </div>
+                    <div class="guild-score">95K</div>
+                </div>
+                
+                <button class="btn-modern btn-outline" style="background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); width: 100%; padding: 10px; border-radius: 8px; margin-top: 10px;">انضمام إلى مجتمع</button>
+            </div>
+        </section>
+
+        <!-- 5. الإعدادات وإنترنت الأشياء (IoT) -->
+        <section id="tab-settings" class="tab-pane">
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-user-gear"></i> الإعدادات الشخصية</h3>
+                <input type="text" id="userNameInput" placeholder="اسمك">
+                <input type="number" id="dailyGoalInput" placeholder="الهدف اليومي">
+                <button class="btn-modern" id="saveSettingsBtn">حفظ البيانات</button>
+            </div>
+
+            <div class="modern-card">
+                <h3><i class="fa-solid fa-network-wired"></i> مركز التحكم (IoT Webhooks)</h3>
+                <p style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">يمكن ربط هذا الزر عبر Webhook للتحكم بالشاشات أو الإذاعة الداخلية.</p>
+                <button class="iot-btn" id="iotBtn">
+                    <i class="fa-solid fa-broadcast-tower"></i> بث الأذان للشاشات (IoT)
+                </button>
+                <div id="iotStatus" style="font-size: 11px; text-align: center; margin-top: 5px; color: var(--primary-color);"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" data-target="tab-home"><i class="fa-solid fa-ring"></i><span>الرئيسية</span></div>
+        <div class="nav-item" data-target="tab-quran"><i class="fa-solid fa-book-open-reader"></i><span>التلاوة</span></div>
+        <div class="nav-item" data-target="tab-ai"><i class="fa-solid fa-robot"></i><span>المساعد وAR</span></div>
+        <div class="nav-item" data-target="tab-community"><i class="fa-solid fa-users"></i><span>المجتمعات</span></div>
+        <div class="nav-item" data-target="tab-settings"><i class="fa-solid fa-gear"></i><span>إعدادات</span></div>
+    </nav>
 
     <script>
-        // ضع نفس رابط Google Apps Script هنا
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbyKddr0gVoUZ7eIRNs2u8TejmG2meq4u8cPyBcXefRwd5NmXgf7nnkU4OIfLK0OrJWc4Q/exec';
+        // --- 1. إدارة التبويبات ---
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                tabPanes.forEach(pane => pane.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById(item.getAttribute('data-target')).classList.add('active');
+            });
+        });
 
-        async function fetchAdminData() {
-            const pass = document.getElementById('adminPass').value;
-            const btn = document.querySelector('#loginScreen button');
-            
-            btn.textContent = 'جاري التحقق...';
-            document.getElementById('loginError').style.display = 'none';
-
-            try {
-                // نرسل الطلب مع تحديد الأكشن وكلمة المرور في الرابط
-                const response = await fetch(`${GAS_URL}?action=admin&password=${pass}`);
-                const data = await response.json();
-
-                if (data.error) {
-                    document.getElementById('loginError').style.display = 'block';
-                    btn.textContent = 'تسجيل الدخول';
-                    return;
-                }
-
-                // إذا نجح الدخول، نعرض اللوحة
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-
-                // تعبئة الإحصائيات
-                document.getElementById('totalUsers').textContent = data.totalUsers;
-                document.getElementById('totalTasbeeh').textContent = data.totalTasbeeh.toLocaleString();
-
-                // تعبئة الجدول
-                const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML = '';
-                
-                // ترتيب المستخدمين تنازلياً
-                data.users.sort((a, b) => b.tasbeehCount - a.tasbeehCount);
-
-                data.users.forEach(user => {
-                    let date = new Date(user.date).toLocaleDateString('ar-OM');
-                    tbody.innerHTML += `
-                        <tr>
-                            <td style="font-weight: bold;">${user.userName}</td>
-                            <td>${user.tasbeehCount.toLocaleString()}</td>
-                            <td>${user.level}</td>
-                            <td class="private-data">${user.phone || 'غير مدرج'}</td>
-                            <td style="font-size: 12px; color: #94a3b8;">${date}</td>
-                        </tr>
-                    `;
-                });
-
-            } catch (error) {
-                alert('حدث خطأ في الاتصال بقاعدة البيانات');
-                btn.textContent = 'تسجيل الدخول';
-            }
+        // --- 2. المسبحة ---
+        let count = parseInt(localStorage.getItem('tasbeehCount')) || 0;
+        const TARGET = 100;
+        
+        function updateTasbeeh() {
+            document.getElementById('counter').textContent = count;
+            let percent = (count % TARGET) / TARGET * 100;
+            document.getElementById('ringContainer').style.background = `conic-gradient(var(--primary-color) ${percent}%, var(--surface-color) 0%)`;
+            localStorage.setItem('tasbeehCount', count);
         }
+        
+        document.getElementById('tasbeehBtn').addEventListener('click', () => {
+            count++; updateTasbeeh();
+            if (navigator.vibrate) navigator.vibrate(30);
+        });
+        updateTasbeeh();
+
+        // --- 3. توليد الخريطة الحرارية (Heatmap) ---
+        // محاكاة لبيانات 30 يوم سابقة
+        const heatmapGrid = document.getElementById('heatmapGrid');
+        for(let i = 0; i < 30; i++) {
+            let activityLevel = Math.random(); 
+            let color = '#1e293b'; // فارغ
+            if(activityLevel > 0.8) color = '#10b981'; // نشيط جداً
+            else if(activityLevel > 0.4) color = '#059669'; // نشيط
+            else if(activityLevel > 0.2) color = '#334155'; // ضعيف
+            
+            heatmapGrid.innerHTML += `<div class="heat-box" style="background-color: ${color};"></div>`;
+        }
+
+        // --- 4. التلاوة التفاعلية (محاكاة سورة الفاتحة) ---
+        const fatihaText = ["بِسْمِ", "اللَّهِ", "الرَّحْمَٰنِ", "الرَّحِيمِ", "الْحَمْدُ", "لِلَّهِ", "رَبِّ", "الْعَالَمِينَ"];
+        const interactiveBox = document.getElementById('interactiveText');
+        
+        fatihaText.forEach((word, index) => {
+            interactiveBox.innerHTML += `<span class="quran-word" id="word-${index}">${word} </span>`;
+        });
+
+        const quranAudio = document.getElementById('quranAudio');
+        // تفاعل وهمي للتوضيح: تظليل الكلمات بناءً على وقت الصوت
+        quranAudio.addEventListener('timeupdate', () => {
+            let time = quranAudio.currentTime;
+            document.querySelectorAll('.quran-word').forEach(w => w.classList.remove('active'));
+            // محاكاة: كل ثانية يتم تظليل كلمة
+            let wordIndex = Math.floor(time / 0.8); 
+            if(document.getElementById(`word-${wordIndex}`)) {
+                document.getElementById(`word-${wordIndex}`).classList.add('active');
+            }
+        });
+
+        // --- 5. المساعد الذكي AI (محاكاة إرسال Webhook) ---
+        document.getElementById('sendAiBtn').addEventListener('click', () => {
+            const input = document.getElementById('aiInput');
+            const chatBox = document.getElementById('chatBox');
+            if(!input.value) return;
+
+            // إضافة رسالة المستخدم
+            chatBox.innerHTML += `<div class="chat-msg msg-user">${input.value}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // محاكاة انتظار الرد من الـ API الذكي (Webhook)
+            setTimeout(() => {
+                chatBox.innerHTML += `<div class="chat-msg msg-ai">هذا سؤال ممتاز. لمعالجة هذا الطلب فعلياً، يتم ربط الكود بـ API خاص بالذكاء الاصطناعي.</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
+            input.value = '';
+        });
+
+        // --- 6. إنترنت الأشياء IoT (إرسال Webhook) ---
+        document.getElementById('iotBtn').addEventListener('click', async () => {
+            const status = document.getElementById('iotStatus');
+            status.textContent = 'جاري إرسال إشارة Webhook...';
+            
+            // هنا يوضع رابط الـ Webhook الخاص بأداة الأتمتة
+            const WEBHOOK_URL = 'https://your-automation-server/webhook/trigger-adhan'; 
+            
+            try {
+                /*
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'play_adhan', location: 'main_hall' })
+                });
+                */
+                setTimeout(() => {
+                    status.textContent = 'تم إرسال الإشارة بنجاح للشاشات الذكية ✓';
+                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                }, 800);
+            } catch(e) {
+                status.textContent = 'فشل الاتصال بالخادم.';
+            }
+        });
+
     </script>
 </body>
 </html>
